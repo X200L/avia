@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}Сценарии спроса - Авиа{% endblock %}
+{% block description %}Сценарии спроса на авиабилеты: квантильный прогноз.{% endblock %}
+
+{% block content %}
+<div class="page-container">
+  <div class="page-intro">
+    <div>
+      <h1>Сценарии спроса</h1>
+      <p>Что произойдёт при разных уровнях спроса и какой диапазон цен возможен.</p>
+    </div>
+  </div>
+
+  <section class="surface scenarios-info">
+    <div class="panel-heading">
+      <div><h2>Квантильный прогноз. От пессимистичного до оптимистичного</h2></div>
+    </div>
+    <p>Значение квантиля <strong>0.1</strong> означает, что реальный спрос с вероятностью около 90% окажется выше него. <strong>0.5</strong> - медиана, <strong>0.9</strong> - высокий сценарий. Интервал 0.1-0.9 охватывает примерно 80% возможных исходов при условии калибровки прогноза.</p>
+    <div class="quantile-preview">
+      <div><span>Нижняя граница · 0.1</span><strong id="lowPreview">...</strong></div>
+      <span class="quantile-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/></svg></span>
+      <div><span>Медиана · 0.5</span><strong id="midPreview">...</strong></div>
+      <span class="quantile-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/></svg></span>
+      <div><span>Верхняя граница · 0.9</span><strong id="highPreview">...</strong></div>
+    </div>
+    <div class="chart-container tall" id="scenarioLargeChart"></div>
+  </section>
+
+  <section class="surface scenario-panel">
+    <div class="panel-heading"><div><h2>Цены по сценариям</h2></div></div>
+    <div class="table-scroll">
+      <table class="scenario-table">
+        <thead>
+          <tr><th>Квантиль</th><th>Спрос при базе</th><th>Спрос при цене</th><th>Опт. цена</th><th>Прибыль</th></tr>
+        </thead>
+        <tbody id="scenarioCompareBody"></tbody>
+      </table>
+    </div>
+  </section>
+</div>
+{% endblock %}

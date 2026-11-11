@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+
+{% block title %}Решись Авиа - аналитика спроса{% endblock %}
+{% block description %}Веб-сервис прогнозирования спроса на авиабилеты и динамического ценообразования.{% endblock %}
+
+{% block content %}
+<div class="page-container">
+  <section>
+    <div class="page-intro">
+      <div>
+        <h1>Спрос под контролем</h1>
+        <p>Прогнозируйте продажи и подбирайте цену на основе 9 сценариев спроса.</p>
+      </div>
+    </div>
+
+    <div class="work-grid">
+      <section class="surface control-panel" aria-labelledby="settingsTitle">
+        <div class="panel-heading"><div><h2 id="settingsTitle">Настройка рейса</h2></div></div>
+        <div class="form-grid two-cols">
+          <div class="field">
+            <label for="originSelect">Откуда</label>
+            <div class="select-shell"><select id="originSelect" aria-label="Откуда"></select></div>
+          </div>
+          <div class="field">
+            <label for="destinationSelect">Куда</label>
+            <div class="select-shell"><select id="destinationSelect" aria-label="Куда"></select></div>
+          </div>
+        </div>
+        <div class="field with-space">
+          <label for="flightDate">Дата вылета</label>
+          <input id="flightDate" type="date" aria-label="Дата вылета">
+        </div>
+        <div class="slider-heading">
+          <label for="priceSlider">Цена билета</label>
+          <span id="priceDelta" class="price-delta">Базовая цена</span>
+        </div>
+        <div class="price-input-shell">
+          <input id="priceInput" type="number" min="1" step="100" inputmode="numeric" aria-label="Цена билета, рубли">
+          <span>₽ / билет</span>
+        </div>
+        <input id="priceSlider" type="range" min="3000" max="30000" step="100" value="12500" aria-label="Цена билета">
+        <div class="range-caption"><span id="minPrice">...</span><span id="maxPrice">...</span></div>
+        <div class="calc-note">
+          <span class="calc-note-icon">i</span>
+          <span>Спрос пересчитывается при изменении цены по коэффициенту чувствительности маршрута.</span>
+        </div>
+        <div class="recommendation">
+          <span>Рекомендуемая цена <strong id="recommendedPrice">...</strong></span>
+          <button id="applyRecommended" type="button">Применить</button>
+        </div>
+        <div class="form-actions">
+          <button class="primary-btn" type="button" id="recalculateButton">Обновить прогноз</button>
+          <button class="tertiary-btn" id="resetPriceButton" type="button">Сбросить цену</button>
+        </div>
+      </section>
+
+      <section class="surface distribution-panel" aria-labelledby="distributionTitle">
+        <div class="panel-heading"><div><h2 id="distributionTitle">Прогноз спроса</h2></div></div>
+        <div class="distribution-callout">
+          <div>
+            <span class="muted-label">Медианный спрос при вашей цене</span>
+            <div class="chart-main-value"><strong id="medianWilling">...</strong><span>человек</span></div>
+          </div>
+          <div class="range-stat"><span>80% интервал</span><strong id="confidenceText">...</strong></div>
+        </div>
+        <div class="chart-legend">
+          <span><i class="legend-icon mint"></i>Спрос при цене</span>
+          <span><i class="legend-icon dashed"></i>Вместимость</span>
+        </div>
+        <div class="chart-container" id="distributionChart" role="img" aria-label="График девяти квантилей спроса"></div>
+        <div class="chart-bottom-note" id="capacityInsight">Рассчитываем прогноз...</div>
+      </section>
+    </div>
+
+    <section class="kpi-grid" aria-label="Ключевые показатели">
+      <article class="kpi-card">
+        <div class="kpi-head"><span>Купят билеты</span></div>
+        <div class="kpi-value" id="soldValue">...</div>
+        <div class="kpi-foot"><span id="soldShare" class="kpi-accent">...</span> <span>загрузка рейса</span></div>
+      </article>
+      <article class="kpi-card">
+        <div class="kpi-head"><span>Свободные места</span></div>
+        <div class="kpi-value" id="availableValue">...</div>
+        <div class="kpi-foot"><span id="seatsTotal">...</span> <span>мест всего</span></div>
+      </article>
+      <article class="kpi-card">
+        <div class="kpi-head"><span>Прогноз выручки</span></div>
+        <div class="kpi-value" id="revenueValue">...</div>
+        <div class="kpi-foot"><span>При выбранной цене</span></div>
+      </article>
+      <article class="kpi-card kpi-highlight">
+        <div class="kpi-head"><span>Ожидаемая прибыль</span></div>
+        <div class="kpi-value" id="profitValue">...</div>
+        <div class="kpi-foot"><span>С учётом расходов на пассажира</span></div>
+      </article>
+    </section>
+
+    <section class="surface trend-panel" aria-labelledby="trendTitle">
+      <div class="panel-heading"><div><h2 id="trendTitle">Продажи за период</h2></div></div>
+      <div class="chart-legend">
+        <span><i class="legend-icon mint"></i>Ожидаемые продажи</span>
+        <span><i class="legend-icon grey"></i>Количество мест</span>
+      </div>
+      <div class="trend-graph" id="trendChart" role="img" aria-label="Прогноз продаж по дням"></div>
+      <div class="trend-caption">При изменении цены прогноз продаж обновляется на всех датах.</div>
+    </section>
+
+    <section class="surface scenario-panel" aria-labelledby="scenarioTitle">
+      <div class="panel-heading"><div><h2 id="scenarioTitle">Все сценарии спроса</h2></div></div>
+      <p class="section-description">Каждая строка описывает квантиль спроса. Медианный сценарий 0.5 соответствует основному прогнозу. Рекомендованная цена взята из CSV или вычислена по формуле кейса.</p>
+      <div class="table-scroll">
+        <table class="scenario-table">
+          <thead>
+            <tr><th>Квантиль</th><th>Желающих</th><th>Купят</th><th>Свободно мест</th><th>Опт. цена</th><th>Прибыль</th></tr>
+          </thead>
+          <tbody id="scenarioTableBody"><tr><td colspan="6">Загрузка...</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+  </section>
+</div>
+{% endblock %}

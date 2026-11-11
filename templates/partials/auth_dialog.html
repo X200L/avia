@@ -1,0 +1,24 @@
+<dialog id="authDialog" class="auth-dialog" aria-labelledby="authHeading">
+  <button class="dialog-close" type="button" id="closeAuth" aria-label="Закрыть окно">×</button>
+  <h2 id="authHeading">Добро пожаловать</h2>
+  <p>Войдите или создайте аккаунт.</p>
+  <div class="auth-tabs">
+    <button type="button" class="active" data-auth-mode="login">Войти</button>
+    <button type="button" data-auth-mode="register">Регистрация</button>
+  </div>
+  <form id="authForm">
+    <div class="field" id="nameField" hidden>
+      <label for="authName">Имя</label>
+      <input id="authName" autocomplete="name" maxlength="60" placeholder="Как к вам обращаться">
+    </div>
+    <div class="field">
+      <label for="authEmail">Email</label>
+      <input id="authEmail" type="email" autocomplete="email" placeholder="name@example.com" required>
+    </div>
+    <div class="field">
+      <label for="authPassword">Пароль</label>
+      <input id="authPassword" type="password" autocomplete="current-password" minlength="8" placeholder="Не менее 8 символов" required>
+    </div>
+    <button class="primary-btn auth-submit" id="authSubmit" type="submit">Войти</button>
+  </form>
+</dialog>

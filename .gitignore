@@ -1,0 +1,10 @@
+__pycache__/
+.venv/
+.env
+*.py[cod]
+data/app.sqlite3
+data/app.sqlite3-*
+data/uploads/
+data/my_forecast.csv
+data/routes.csv
+data/seasonal_forecast.csv
